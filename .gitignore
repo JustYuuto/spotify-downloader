@@ -2,4 +2,4 @@
 /.venv/
 *.mp3
 *.wvd
-*.txt
+spotify_*.txt
