@@ -26,3 +26,7 @@ note: u need to have a spotify premium account to download music at 160kbps+
 
 - [Python 3](https://www.python.org/downloads/)
 - [FFmpeg](https://www.ffmpeg.org/download.html) (in ur path), this is required for decrypting mp3s
+
+## License
+
+the source code is licensed under the mit license bcz why not. u can view it [here](LICENSE.txt)
