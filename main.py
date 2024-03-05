@@ -66,8 +66,8 @@ if __name__ == '__main__':
     cdm.parse_license(session_id, license.content)
 
     audio = requests.get(url)
-    audio_file = abspath(f'./{track['name']}.mp3')
-    audio_file_decrypted = abspath(f'./{track['name']}-decrypted.mp3')
+    audio_file = abspath(f"./{track['name']}.mp3")
+    audio_file_decrypted = abspath(f"./{track['name']}-decrypted.mp3")
 
     if isfile(audio_file):
         remove(audio_file)
