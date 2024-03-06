@@ -3,3 +3,4 @@
 *.mp3
 *.wvd
 spotify_*.txt
+__pycache__
