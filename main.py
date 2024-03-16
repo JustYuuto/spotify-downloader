@@ -10,18 +10,22 @@ import subprocess
 import argparse
 from utils.token import AccessToken
 
+if not isfile('device.wvd'):
+    print('You need to have a device.wvd file in the same directory as this script')
+    exit(1)
+
 parser = argparse.ArgumentParser(
-                    prog='SpotifyDownloader',
+                    prog='Spotify Downloader',
                     description='it downloads spotify songs')
-parser.add_argument('track_id', type=str, help='the track id of the song')
+parser.add_argument('track_id', type=str, help='The track id of the song')
 parser.add_argument('--add-metadata', type=bool,
-                    help='add metadata to the song? (like artist, album, cover, etc)',
+                    help='Should add metadata to the song? (like artists, album, cover, etc)',
                     default=False, required=False)
 args = parser.parse_args()
 
 if __name__ == '__main__':
     if not isfile('spotify_dc.txt'):
-        user_token = input('plz enter your spotify "sp_dc" cookie: ')
+        user_token = input('Enter your Spotify "sp_dc" cookie: ')
         with open('spotify_dc.txt', 'w') as file:
             file.write(user_token.replace('Bearer ', ''))
     else:
