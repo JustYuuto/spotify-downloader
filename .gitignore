@@ -1,6 +1,7 @@
 /.idea/
 /.venv/
 *.mp3
+*.m4a
 *.wvd
 spotify_*.txt
 __pycache__

@@ -3,9 +3,9 @@ from utils.token import AccessToken
 
 
 class Audio:
+
     pssh = ''
     license_url = 'https://gew1-spclient.spotify.com/widevine-license/v1/audio/license'
-    access_token = AccessToken().access_token
 
     def __init__(self):
         pass
@@ -19,7 +19,7 @@ class Audio:
             'Accept': 'application/json',
             'Accept-Encoding': 'gzip, deflate, br',
             'Accept-Language': 'en',
-            'Authorization': f'Bearer {AccessToken().access_token}',
+            'Authorization': f'Bearer {AccessToken().access_token()}',
             'Connection': 'keep-alive',
             'Host': 'spclient.wg.spotify.com',
             'Origin': 'https://open.spotify.com',
@@ -50,7 +50,7 @@ class Audio:
             'Accept': 'application/json',
             'Accept-Encoding': 'gzip, deflate, br',
             'Accept-Language': 'en',
-            'Authorization': f'Bearer {self.access_token}',
+            'Authorization': f'Bearer {AccessToken().access_token()}',
             'Connection': 'keep-alive',
             'Host': 'gew1-spclient.spotify.com',
             'Origin': 'https://open.spotify.com',

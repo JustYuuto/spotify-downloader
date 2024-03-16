@@ -12,6 +12,12 @@ class AccessToken:
     def __init__(self):
         pass
 
+    def client_token(self):
+        return open('spotify_client_token.txt', 'r').read() if exists('spotify_client_token.txt') else ''
+    
+    def access_token(self):
+        return open('spotify_token.txt', 'r').read() if exists('spotify_token.txt') else ''
+
     def refresh(self):
         url = 'https://open.spotify.com/get_access_token'
         params = {
@@ -24,7 +30,7 @@ class AccessToken:
             'Accept-Language': 'en',
             'App-Platform': 'WebPlayer',
             'Connection': 'keep-alive',
-            'Cookie': f'sp_dc={self.client_token}',
+            'Cookie': f'sp_dc={self.dc}',
             'Host': 'open.spotify.com',
             'Sec-Fetch-Dest': 'empty',
             'Sec-Fetch-Mode': 'cors',
@@ -34,7 +40,12 @@ class AccessToken:
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0',
         }, params=params)
         request.raise_for_status()
-        token = request.json()['accessToken']
+        json = request.json()
+        is_anonymous = json['isAnonymous']
+        if is_anonymous:
+            print('Error: Please use a valid Spotify "sp_dc" cookie.')
+            exit(1)
+        token = json['accessToken']
 
         self.access_token = token
 
@@ -49,6 +60,14 @@ class AccessToken:
             'client_data': {
                 'client_id': 'd8a5ed958d274c2e8ee717e6a4b0971d',
                 'client_version': '1.2.33.0-unknown',
+                'js_sdk_data': {
+                    'device_brand': 'unknown',
+                    'device_model': 'unknown',
+                    'os': 'windows',
+                    'os_version': 'NT10.0',
+                    'device_id': 'e78c110daf3a64110ba44f176ccc1f02',
+                    'device_type': 'computer'
+                }
             }
         }), headers={
             'Accept': 'application/json',

@@ -16,6 +16,7 @@ git clone https://github.com/JustYuuto/spotify-downloader.git
 cd spotify-downloader
 pip install -r requirements.txt
 python main.py <id of the track you want to download>
+# Note: the track id can be a normal id, a gid, or a spotify uri (spotify:track:xxxxxx....)
 ```
 
 The script will likely ask you for your "sp_dc" cookie, you can get it by logging into Spotify web, and getting the cookie from the storage (in devtools).
