@@ -26,8 +26,9 @@ The script will likely ask you for your "sp_dc" cookie, you can get it by loggin
 
 ## Requirements
 
-- [Python 3](https://www.python.org/downloads/)
+- [Python 3.9](https://www.python.org/downloads/release/python-390/) (due to the package `pywidevine` and compatibility reasons)
 - [FFmpeg](https://www.ffmpeg.org/download.html) (in ur path), this is required for decrypting mp3s
+
 
 ## License
 

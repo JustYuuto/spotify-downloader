@@ -64,6 +64,9 @@ if __name__ == '__main__':
         if e.response.status_code == 401:
             token.refresh()
             track = audio.get_track(track_id)
+        else:
+            print('Error:', e)
+            exit(1)
 
     def find_quality(track, quality):
         for file in track['file']:
@@ -71,10 +74,7 @@ if __name__ == '__main__':
                 return file
         return None
 
-    file = find_quality(track, args.quality)
-    url = audio.get_audio_urls(file['file_id'])[0]
-
-    pssh = PSSH(requests.get(f'https://seektables.scdn.co/seektable/{track['file'][4]['file_id']}.json').json()['pssh'])
+    pssh = PSSH(requests.get(f"https://seektables.scdn.co/seektable/{track['file'][4]['file_id']}.json").json()['pssh'])
     device = Device.load('device.wvd')
     cdm = Cdm.from_device(device)
     session_id = cdm.open()
@@ -85,18 +85,19 @@ if __name__ == '__main__':
         'Accept-Encoding': 'gzip, deflate, br',
         'Accept-Language': 'en',
         'authorization': f'Bearer {AccessToken().access_token()}',
-        'client-token': AccessToken().client_token(),
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0',
     }, data=challenge)
     license.raise_for_status()
 
     cdm.parse_license(session_id, license.content)
 
+    cdn_file = find_quality(track, args.quality)
+    url = audio.get_audio_urls(cdn_file['file_id'])[0]
     audio = requests.get(url)
     audio.raise_for_status()
-    audio_type = file['format'].split('_')[0].lower().replace('mp4', 'm4a')
-    audio_file = abspath(f"./{track['name']}.{audio_type}")
-    audio_file_decrypted = abspath(f"./{track['name']}-decrypted.{audio_type}")
+    audio_type = cdn_file['format'].split('_')[0].lower().replace('mp4', 'm4a')
+    audio_file = abspath(f"./{track['name']}-encrypted.{audio_type}")
+    audio_file_decrypted = abspath(f"./{track['name']}.{audio_type}")
 
     if isfile(audio_file):
         remove(audio_file)
@@ -111,18 +112,16 @@ if __name__ == '__main__':
         try:
             path = args.ffmpeg_path if isinstance(args.ffmpeg_path, str) else 'ffmpeg'
             cmd = [
-                path, '-decryption_key', key.key.hex(), '-i', audio_file, '-c', 'copy', audio_file_decrypted
+                path, '-decryption_key', key.key.hex(), '-i', audio_file, audio_file_decrypted
             ]
-            print('Running', ' '.join(cmd))
-            subprocess.run(cmd)
+            subprocess.run(cmd, stdout=None, stderr=None, stdin=None, shell=False, check=True)
         except Exception as e:
-            print('Error: FFmpeg was not found in your path!')
+            print('Error:', e)
             exit(1)
-
-    if args.add_metadata:
-        metadata.set_metadata(track, audio_file_decrypted)
+    cdm.close(session_id)
 
     remove(audio_file)
-    rename(audio_file_decrypted, audio_file)
 
-    cdm.close(session_id)
+    if args.add_metadata == True:
+        print('Adding metadata to the song...')
+        metadata.set_metadata(track, audio_file_decrypted)
