@@ -19,6 +19,8 @@ python main.py <id of the track you want to download>
 # Note: the track id can be a normal id, a gid, or a spotify uri (spotify:track:xxxxxx....)
 ```
 
+Please see https://cdm-project.com/How-To/Dumping-L3-from-Android to get the `device.wvd` file.
+
 The script will likely ask you for your "sp_dc" cookie, you can get it by logging into Spotify web, and getting the cookie from the storage (in devtools).
 
 > [!NOTE]
