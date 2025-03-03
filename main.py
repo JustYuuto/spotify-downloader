@@ -37,7 +37,7 @@ if __name__ == '__main__':
     if isinstance(args.ffmpeg_path, str) and not isfile(args.ffmpeg_path):
         print('Error: FFmpeg was not found in the specified path!')
         exit(1)
-    elif not 'ffmpeg' in environ['PATH']:
+    elif not isinstance(args.ffmpeg_path, str) and not 'ffmpeg' in environ['PATH']:
         print('Error: FFmpeg was not found in your path!')
         exit(1)
     
